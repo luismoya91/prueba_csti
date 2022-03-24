@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AutorController;
+use App\Http\Controllers\PeliculaController;
+use App\Http\Controllers\CategoriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('home');
+
+Route::Resource('autor', AutorController::class);
+Route::Resource('categoria', CategoriaController::class);
+Route::Resource('pelicula', PeliculaController::class);

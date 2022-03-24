@@ -14,8 +14,18 @@ class AutorController extends Controller
      */
     public function index()
     {
-        $autores =  Autor::all();
-        return json_encode($autores->toArray());
+        $data =  Autor::all();
+        return view('autor.index',compact('data'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('autor.create');
     }
 
     /**
@@ -26,8 +36,13 @@ class AutorController extends Controller
      */
     public function store(Request $request)
     {
-        $autor = Autor::create($request->all());
-        return json_encode($autor);
+        $request->validate([
+            'nombre' => 'required'
+        ]);
+        
+        Autor::create($request->all());
+        return redirect()->route('autor.index')
+                        ->with('success','Autor created successfully.');
     }
 
     /**
@@ -38,31 +53,51 @@ class AutorController extends Controller
      */
     public function show($id)
     {
-        $autor = Autor::find($id);
-        return json_encode($autor);
+        $data = Autor::find($id);
+        return view('autor.show',compact('data'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Channel  $autor
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Autor  $autor)
+    {
+        return view('autor.edit',compact('autor'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Autor  $autor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Autor $autor)
     {
-        $autor = Autor::find($id);
-        return json_encode($autor);
+        $request->validate([
+            'nombre' => 'required'
+        ]);
+
+        $autor->update($request->all());
+
+        return redirect()->route('autor.index')
+                        ->with('success','autor updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Autor  $autor
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Autor $autor)
     {
-        //
+
+        $autor->delete();    
+        return redirect()->route('autor.index')
+                        ->with('success','Autor deleted successfully');
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Autor;
+use App\Models\Categoria;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pelicula extends Model
 {
@@ -14,5 +16,24 @@ class Pelicula extends Model
      *
      * @var string
      */
-    protected $table = 'pelicula';
+    protected $table = 'peliculas';
+
+    protected $fillable = [
+        'id_categoria',
+        'id_autor',
+        'nombre',
+        'fecha_lanzamiento',
+        'productora',
+    ];
+    public $timestamps = false;
+
+    public function autor()
+    {
+        return $this->hasOne(Autor::class,'id','id_autor');
+    }
+
+    public function categoria()
+    {
+        return $this->hasOne(Categoria::class,'id','id_categoria');
+    }
 }
